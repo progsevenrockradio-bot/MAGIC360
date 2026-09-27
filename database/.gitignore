@@ -1,1 +1,2 @@
-*.sqlite*
+# Allow SQLite database tracking for deployment
+!.gitignore
