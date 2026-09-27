@@ -22,6 +22,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Auto-fallback APP_KEY if missing in environment
+        if (empty(Config::get('app.key'))) {
+            Config::set('app.key', 'base64:9dzXDKV0mi5dkKIRNcehfgrWCu/BFTbV0J0iYCIGcj0=');
+        }
+
         // Auto-setup SQLite database file and migrate/seed if needed in production/cloud environments
         try {
             if (Config::get('database.default') === 'sqlite') {
