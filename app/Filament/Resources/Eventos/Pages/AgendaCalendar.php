@@ -30,26 +30,28 @@ class AgendaCalendar extends FullCalendarWidget
             })->toArray();
     }
 
-    public function onEventDrop(array $info): void
+    public function onEventDrop(array $event, array $oldEvent, array $relatedEvents, array $delta, ?array $oldResource, ?array $newResource): bool
     {
-        $evento = Evento::find($info['event']['id']);
+        $evento = Evento::find($event['id']);
         if ($evento) {
             $service = app(DisponibilidadService::class);
             $libre = $service->estaLibre(
-                \Carbon\Carbon::parse($info['event']['start']),
-                \Carbon\Carbon::parse($info['event']['start'])->format('H:i'),
+                \Carbon\Carbon::parse($event['start']),
+                \Carbon\Carbon::parse($event['start'])->format('H:i'),
                 $evento->horas_servicio ?? 2,
                 $evento->maquina_id
             );
             
             if (!$libre) {
-                return;
+                return false;
             }
 
-            $evento->fecha = \Carbon\Carbon::parse($info['event']['start']);
-            $evento->hora_inicio = \Carbon\Carbon::parse($info['event']['start'])->format('H:i');
-            $evento->hora_fin = \Carbon\Carbon::parse($info['event']['end'])->format('H:i');
+            $evento->fecha = \Carbon\Carbon::parse($event['start']);
+            $evento->hora_inicio = \Carbon\Carbon::parse($event['start'])->format('H:i');
+            $evento->hora_fin = \Carbon\Carbon::parse($event['end'])->format('H:i');
             $evento->save();
+            return true;
         }
+        return false;
     }
 }
