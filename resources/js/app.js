@@ -468,4 +468,69 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         animatedElements.forEach(el => el.classList.add('visible'));
     }
+    // 8. Comprobación en vivo de disponibilidad
+    const formHoraInput = document.getElementById('form-hora');
+    const formFechaInput = document.getElementById('form-fecha');
+    const btnEnviarReserva = document.getElementById('btn-enviar-reserva');
+    
+    async function checkDisponibilidad() {
+        if (!formFechaInput || !formHoraInput || !formHoras) return;
+        
+        const fecha = formFechaInput.value;
+        const hora = formHoraInput.value;
+        const horas = formHoras.value || 2;
+        
+        if (!fecha || !hora) return;
+        
+        // Disable button while checking
+        if (btnEnviarReserva) btnEnviarReserva.disabled = true;
+        
+        try {
+            const url = new URL(window.location.origin + '/disponibilidad');
+            url.searchParams.append('fecha', fecha);
+            url.searchParams.append('hora_inicio', hora);
+            url.searchParams.append('horas', horas);
+            
+            const response = await fetch(url.toString(), {
+                headers: { 'Accept': 'application/json' }
+            });
+            
+            if (!response.ok) {
+                if (btnEnviarReserva) btnEnviarReserva.disabled = false;
+                return;
+            }
+            
+            const data = await response.json();
+            
+            if (alertMessage) {
+                alertMessage.classList.remove('hidden');
+                if (data.libre) {
+                    alertMessage.innerHTML = '✅ <strong>¡Fecha disponible!</strong> Puedes continuar con la reserva.';
+                    alertMessage.className = 'mb-6 p-4 rounded-2xl text-sm font-medium bg-emerald-500/20 border border-emerald-500/40 text-emerald-300';
+                    if (btnEnviarReserva) btnEnviarReserva.disabled = false;
+                } else {
+                    let altHtml = '❌ <strong>Esa fecha/hora ya está ocupada.</strong><br>';
+                    if (data.alternativas && data.alternativas.length > 0) {
+                        altHtml += 'Fechas alternativas cercanas libres: <ul>';
+                        data.alternativas.forEach(alt => {
+                            altHtml += `<li>- ${alt}</li>`;
+                        });
+                        altHtml += '</ul>';
+                    } else {
+                        altHtml += 'No hemos encontrado alternativas cercanas. Por favor prueba otra fecha.';
+                    }
+                    alertMessage.innerHTML = altHtml;
+                    alertMessage.className = 'mb-6 p-4 rounded-2xl text-sm font-medium bg-red-500/20 border border-red-500/40 text-red-300';
+                }
+            }
+        } catch (e) {
+            console.error('Error fetching disponibilidad', e);
+            if (btnEnviarReserva) btnEnviarReserva.disabled = false;
+        }
+    }
+    
+    if (formFechaInput) formFechaInput.addEventListener('change', checkDisponibilidad);
+    if (formHoraInput) formHoraInput.addEventListener('change', checkDisponibilidad);
+    if (formHoras) formHoras.addEventListener('change', checkDisponibilidad);
+
 });

@@ -65,10 +65,17 @@
                                    class="w-full bg-black border border-[var(--color-azul)]/40 rounded-full px-5 py-3.5 text-white placeholder-gray-500 focus:border-[var(--color-dorado)] focus:ring-1 focus:ring-[var(--color-dorado)] focus:outline-none text-sm">
                         </div>
 
-                        <div>
-                            <label for="form-fecha" class="block text-xs font-bold text-gray-300 uppercase mb-2">Fecha del evento</label>
-                            <input type="date" id="form-fecha" name="fecha_evento" value="{{ old('fecha_evento') }}" min="{{ date('Y-m-d') }}"
-                                   class="w-full bg-black border border-[var(--color-azul)]/40 rounded-full px-5 py-3.5 text-white focus:border-[var(--color-dorado)] focus:ring-1 focus:ring-[var(--color-dorado)] focus:outline-none text-sm">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="form-fecha" class="block text-xs font-bold text-gray-300 uppercase mb-2">Fecha *</label>
+                                <input type="date" id="form-fecha" name="fecha" value="{{ old('fecha') }}" min="{{ date('Y-m-d') }}" required
+                                       class="w-full bg-black border border-[var(--color-azul)]/40 rounded-full px-5 py-3.5 text-white focus:border-[var(--color-dorado)] focus:ring-1 focus:ring-[var(--color-dorado)] focus:outline-none text-sm">
+                            </div>
+                            <div>
+                                <label for="form-hora" class="block text-xs font-bold text-gray-300 uppercase mb-2">Hora de inicio *</label>
+                                <input type="time" id="form-hora" name="hora" value="{{ old('hora', '18:00') }}" required
+                                       class="w-full bg-black border border-[var(--color-azul)]/40 rounded-full px-5 py-3.5 text-white focus:border-[var(--color-dorado)] focus:ring-1 focus:ring-[var(--color-dorado)] focus:outline-none text-sm">
+                            </div>
                         </div>
                     </div>
 

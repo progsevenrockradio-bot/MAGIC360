@@ -6,7 +6,9 @@ use App\Http\Controllers\PresupuestoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
-Route::post('/contacto', ContactoController::class)->name('contacto.send');
+Route::post('/contacto', ContactoController::class)
+    ->name('contacto.send')
+    ->middleware('throttle:5,1');
 
 // Presupuesto routes
 Route::post('/presupuesto/calcular', [PresupuestoController::class, 'calcular'])->name('presupuesto.calcular');
