@@ -15,6 +15,9 @@ Route::get('/presupuesto/{presupuesto}/pdf', [PresupuestoController::class, 'des
     ->name('presupuesto.pdf')
     ->middleware('signed');
 
+// Disponibilidad
+Route::get('/disponibilidad', [\App\Http\Controllers\DisponibilidadController::class, 'check'])->name('disponibilidad.check');
+
 // Legal pages
 Route::get('/aviso-legal', [LandingController::class, 'avisoLegal'])->name('legal.aviso-legal');
 Route::get('/privacidad', [LandingController::class, 'privacidad'])->name('legal.privacidad');
