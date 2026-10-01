@@ -1,9 +1,10 @@
 <?php
 namespace App\Filament\Resources;
+use BackedEnum;
 use App\Filament\Resources\FacturaResource\Pages;
 use App\Models\Factura;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -13,12 +14,12 @@ use Filament\Notifications\Notification;
 class FacturaResource extends Resource
 {
     protected static ?string $model = Factura::class;
-    protected static ?string $navigationIcon = 'heroicon-o-document-currency-euro';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-currency-euro';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Forms\Components\Select::make('cliente_id')
                     ->relationship('cliente', 'nombre')
                     ->searchable()
