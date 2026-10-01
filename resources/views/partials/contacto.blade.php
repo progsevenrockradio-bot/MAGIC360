@@ -52,7 +52,7 @@
                         <div>
                             <label for="form-telefono" class="block text-xs font-bold text-gray-300 uppercase mb-2">Teléfono *</label>
                             <input type="tel" id="form-telefono" name="telefono" value="{{ old('telefono') }}" required
-                                   placeholder="Ej: 600 123 456"
+                                   placeholder="Ej: {{ $ajuste->telefono ?? '600 123 456' }}"
                                    class="w-full bg-black border border-[var(--color-azul)]/40 rounded-full px-5 py-3.5 text-white placeholder-gray-500 focus:border-[var(--color-dorado)] focus:ring-1 focus:ring-[var(--color-dorado)] focus:outline-none text-sm">
                         </div>
                     </div>

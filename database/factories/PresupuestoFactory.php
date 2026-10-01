@@ -22,7 +22,7 @@ class PresupuestoFactory extends Factory
             'fecha' => now()->toDateString(),
             'fecha_evento' => now()->addDays(20)->toDateString(),
             'cliente_nombre' => fake()->name(),
-            'cliente_telefono' => '+34 600 123 456',
+            'cliente_telefono' => '+34 612 345 678',
             'cliente_email' => fake()->safeEmail(),
             'ciudad' => 'Alicante',
             'tipo_evento' => 'Boda',

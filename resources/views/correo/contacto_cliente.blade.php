@@ -33,7 +33,7 @@
         <p>Nuestro equipo comprobará la disponibilidad para tu fecha (<strong>{{ $mensaje->fecha_evento ? $mensaje->fecha_evento->format('d/m/Y') : 'próximo evento' }}</strong>) y te responderemos hoy mismo con la propuesta detallada y el precio final.</p>
         <p>Si tienes prisa o quieres resolver alguna duda al instante, también puedes escribirnos directamente a nuestro WhatsApp:</p>
         <div style="margin-top: 25px; text-align: center;">
-            <a href="https://wa.me/34600000000" style="background: linear-gradient(0deg, #4D36D0 0%, #937AFF 100%); color: white; padding: 14px 28px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block;">Escribir por WhatsApp</a>
+            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $ajuste->whatsapp ?? '') }}" style="background: linear-gradient(0deg, #4D36D0 0%, #937AFF 100%); color: white; padding: 14px 28px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block;">Escribir por WhatsApp</a>
         </div>
         <p style="margin-top: 30px; font-size: 12px; color: #817E84; text-align: center;">© 2026 Magic360 · Todos los derechos reservados</p>
     </div>

@@ -3,8 +3,9 @@
 namespace App\Filament\Resources\Eventos\Schemas;
 
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Schemas\Schema;
 
@@ -12,45 +13,34 @@ class EventoForm
 {
     public static function configure(Schema $schema): Schema
     {
-        return $schema
-            ->components([
-                TextInput::make('cliente_id')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('maquina_id')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('presupuesto_id')
-                    ->numeric(),
-                DatePicker::make('fecha')
-                    ->required(),
-                TimePicker::make('hora_inicio')
-                    ->required(),
-                TimePicker::make('hora_fin')
-                    ->required(),
-                TextInput::make('poblacion'),
-                TextInput::make('direccion'),
-                TextInput::make('zona_id')
-                    ->numeric(),
-                TextInput::make('horas_servicio')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('horas_extra_viaje')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                TextInput::make('importe_total')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('senal_cobrada')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                TextInput::make('estado')
-                    ->required()
-                    ->default('reservado'),
-                Textarea::make('notas')
-                    ->columnSpanFull(),
-            ]);
+        return $schema->schema([
+            Select::make('cliente_id')
+                ->relationship('cliente', 'nombre')
+                ->searchable()
+                ->required()
+                ->createOptionForm([
+                    TextInput::make('nombre')->required(),
+                    TextInput::make('email')->email(),
+                    TextInput::make('telefono'),
+                ]),
+            Select::make('maquina_id')
+                ->relationship('maquina', 'nombre')
+                ->required(),
+            DatePicker::make('fecha')->required(),
+            TimePicker::make('hora_inicio')->required(),
+            TimePicker::make('hora_fin')->required(),
+            TextInput::make('poblacion'),
+            TextInput::make('direccion'),
+            TextInput::make('importe_total')->numeric()->prefix('€'),
+            Select::make('estado')
+                ->options([
+                    'reservado' => 'Reservado',
+                    'realizado' => 'Realizado',
+                    'cancelado' => 'Cancelado'
+                ])
+                ->default('reservado')
+                ->required(),
+            Textarea::make('notas')->columnSpanFull(),
+        ]);
     }
 }
