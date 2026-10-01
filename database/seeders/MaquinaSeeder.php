@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Maquina;
 
 class MaquinaSeeder extends Seeder
 {
@@ -12,6 +12,12 @@ class MaquinaSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Maquina::firstOrCreate(
+            ['nombre' => 'Cabina 360 · Principal'],
+            [
+                'activa' => true,
+                'notas' => 'Máquina por defecto'
+            ]
+        );
     }
 }
