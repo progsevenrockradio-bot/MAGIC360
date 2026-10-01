@@ -9,56 +9,107 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('facturas', function (Blueprint $table) {
-            $table->string('serie')->nullable()->after('numero');
-            $table->integer('ejercicio')->nullable()->after('serie');
-            $table->foreignId('factura_rectificada_id')->nullable()->constrained('facturas')->nullOnDelete()->after('ejercicio');
-            $table->string('motivo_rectificacion')->nullable()->after('factura_rectificada_id');
-            $table->decimal('base', 10, 2)->default(0)->after('motivo_rectificacion');
-            $table->decimal('iva_porcentaje', 5, 2)->default(21)->after('base');
-            $table->decimal('iva_importe', 10, 2)->default(0)->after('iva_porcentaje');
-            $table->decimal('irpf_porcentaje', 5, 2)->default(0)->after('iva_importe');
-            $table->decimal('irpf_importe', 10, 2)->default(0)->after('irpf_porcentaje');
-            $table->foreignId('presupuesto_id')->nullable()->constrained('presupuestos')->nullOnDelete()->after('irpf_importe');
-            $table->date('fecha_vencimiento')->nullable()->after('fecha');
-            $table->date('fecha_pago')->nullable()->after('fecha_vencimiento');
-            $table->timestamp('pdf_generado_at')->nullable();
-            
-            // VeriFactu
-            $table->string('huella')->nullable();
-            $table->string('huella_anterior')->nullable();
-            $table->timestamp('registro_alta_at')->nullable();
+            if (! Schema::hasColumn('facturas', 'serie')) {
+                $table->string('serie')->nullable();
+            }
+            if (! Schema::hasColumn('facturas', 'ejercicio')) {
+                $table->integer('ejercicio')->nullable();
+            }
+            if (! Schema::hasColumn('facturas', 'factura_rectificada_id')) {
+                $table->foreignId('factura_rectificada_id')->nullable()->constrained('facturas')->nullOnDelete();
+            }
+            if (! Schema::hasColumn('facturas', 'motivo_rectificacion')) {
+                $table->string('motivo_rectificacion')->nullable();
+            }
+            if (! Schema::hasColumn('facturas', 'base')) {
+                $table->decimal('base', 10, 2)->default(0);
+            }
+            if (! Schema::hasColumn('facturas', 'iva_porcentaje')) {
+                $table->decimal('iva_porcentaje', 5, 2)->default(21);
+            }
+            if (! Schema::hasColumn('facturas', 'iva_importe')) {
+                $table->decimal('iva_importe', 10, 2)->default(0);
+            }
+            if (! Schema::hasColumn('facturas', 'irpf_porcentaje')) {
+                $table->decimal('irpf_porcentaje', 5, 2)->default(0);
+            }
+            if (! Schema::hasColumn('facturas', 'irpf_importe')) {
+                $table->decimal('irpf_importe', 10, 2)->default(0);
+            }
+            if (! Schema::hasColumn('facturas', 'presupuesto_id')) {
+                $table->foreignId('presupuesto_id')->nullable()->constrained('presupuestos')->nullOnDelete();
+            }
+            if (! Schema::hasColumn('facturas', 'fecha_vencimiento')) {
+                $table->date('fecha_vencimiento')->nullable();
+            }
+            if (! Schema::hasColumn('facturas', 'fecha_pago')) {
+                $table->date('fecha_pago')->nullable();
+            }
+            if (! Schema::hasColumn('facturas', 'pdf_generado_at')) {
+                $table->timestamp('pdf_generado_at')->nullable();
+            }
+            if (! Schema::hasColumn('facturas', 'huella')) {
+                $table->string('huella')->nullable();
+            }
+            if (! Schema::hasColumn('facturas', 'huella_anterior')) {
+                $table->string('huella_anterior')->nullable();
+            }
+            if (! Schema::hasColumn('facturas', 'registro_alta_at')) {
+                $table->timestamp('registro_alta_at')->nullable();
+            }
         });
 
         Schema::table('ajustes', function (Blueprint $table) {
-            $table->string('nombre_fiscal')->nullable();
-            $table->string('nif')->nullable();
-            $table->string('direccion_fiscal')->nullable();
-            $table->string('iban')->nullable();
-            $table->decimal('iva_porcentaje', 5, 2)->default(21);
-            $table->decimal('irpf_porcentaje', 5, 2)->default(0);
-            $table->integer('dias_vencimiento')->default(30);
+            if (! Schema::hasColumn('ajustes', 'nombre_fiscal')) {
+                $table->string('nombre_fiscal')->nullable();
+            }
+            if (! Schema::hasColumn('ajustes', 'nif')) {
+                $table->string('nif')->nullable();
+            }
+            if (! Schema::hasColumn('ajustes', 'direccion_fiscal')) {
+                $table->string('direccion_fiscal')->nullable();
+            }
+            if (! Schema::hasColumn('ajustes', 'iban')) {
+                $table->string('iban')->nullable();
+            }
+            if (! Schema::hasColumn('ajustes', 'iva_porcentaje')) {
+                $table->decimal('iva_porcentaje', 5, 2)->default(21);
+            }
+            if (! Schema::hasColumn('ajustes', 'irpf_porcentaje')) {
+                $table->decimal('irpf_porcentaje', 5, 2)->default(0);
+            }
+            if (! Schema::hasColumn('ajustes', 'dias_vencimiento')) {
+                $table->integer('dias_vencimiento')->default(30);
+            }
         });
 
         Schema::table('clientes', function (Blueprint $table) {
-            $table->string('nif')->nullable();
-            $table->string('direccion')->nullable();
+            if (! Schema::hasColumn('clientes', 'nif')) {
+                $table->string('nif')->nullable();
+            }
+            if (! Schema::hasColumn('clientes', 'direccion')) {
+                $table->string('direccion')->nullable();
+            }
         });
 
         Schema::table('presupuestos', function (Blueprint $table) {
-            $table->boolean('facturado')->default(false);
+            if (! Schema::hasColumn('presupuestos', 'facturado')) {
+                $table->boolean('facturado')->default(false);
+            }
         });
-        
-        // Tabla de líneas de factura
-        Schema::create('factura_lineas', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('factura_id')->constrained()->cascadeOnDelete();
-            $table->string('concepto');
-            $table->integer('cantidad')->default(1);
-            $table->decimal('precio_unitario', 10, 2)->default(0);
-            $table->decimal('descuento', 10, 2)->default(0);
-            $table->decimal('subtotal', 10, 2)->default(0);
-            $table->timestamps();
-        });
+
+        if (! Schema::hasTable('factura_lineas')) {
+            Schema::create('factura_lineas', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('factura_id')->constrained()->cascadeOnDelete();
+                $table->string('concepto');
+                $table->integer('cantidad')->default(1);
+                $table->decimal('precio_unitario', 10, 2)->default(0);
+                $table->decimal('descuento', 10, 2)->default(0);
+                $table->decimal('subtotal', 10, 2)->default(0);
+                $table->timestamps();
+            });
+        }
     }
 
     public function down(): void
