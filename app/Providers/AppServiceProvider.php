@@ -43,6 +43,8 @@ class AppServiceProvider extends ServiceProvider
             if (! Schema::hasTable('ajustes')) {
                 Artisan::call('migrate', ['--force' => true]);
                 Artisan::call('db:seed', ['--force' => true]);
+            } elseif (! Schema::hasTable('presupuestos')) {
+                Artisan::call('migrate', ['--force' => true]);
             }
         } catch (\Throwable $e) {
             // Silently continue if database is already configured or managed

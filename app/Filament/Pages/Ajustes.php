@@ -140,6 +140,10 @@ class Ajustes extends Page implements HasForms
                                             ->label('Km de desplazamiento incluidos en Zona A')
                                             ->numeric()
                                             ->default(25),
+                                        TextInput::make('desplazamiento_hora_extra')
+                                            ->label('Precio hora extra desplazamiento/espera (€)')
+                                            ->numeric()
+                                            ->default(30.00),
                                         TextInput::make('zona_consulta_texto')
                                             ->label('Texto para zona "A consultar"')
                                             ->default('A consultar'),

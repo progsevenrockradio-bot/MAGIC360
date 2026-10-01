@@ -15,6 +15,7 @@ class Ajuste extends Model
             'nocturnidad_activa' => 'boolean',
             'nocturnidad_importe' => 'decimal:2',
             'desplazamiento_incluido_km' => 'integer',
+            'desplazamiento_hora_extra' => 'decimal:2',
             'radio_activa' => 'boolean',
         ];
     }
